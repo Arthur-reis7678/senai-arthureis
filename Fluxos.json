@@ -1,0 +1,164 @@
+[
+    {
+        "id": "5c317c07047eba6f",
+        "type": "inject",
+        "z": "c6f138249fc85b8a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"nome\":\"Temperatura\",\"valor\":25.5}",
+        "payloadType": "json",
+        "x": 110,
+        "y": 140,
+        "wires": [
+            [
+                "94b07e8cda327a69"
+            ]
+        ]
+    },
+    {
+        "id": "94b07e8cda327a69",
+        "type": "function",
+        "z": "c6f138249fc85b8a",
+        "name": "function 1",
+        "func": "var nome = msg.payload.nome;\nvar valor = msg.payload.valor;\nmsg.topic = `INSERT INTO sensores (nome, valor) VALUES ('${nome}', ${valor})`;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 140,
+        "wires": [
+            [
+                "86f1dbf5a2791764"
+            ]
+        ]
+    },
+    {
+        "id": "86f1dbf5a2791764",
+        "type": "mysql",
+        "z": "c6f138249fc85b8a",
+        "mydb": "d388a8bc6adc9c8e",
+        "name": "",
+        "x": 490,
+        "y": 140,
+        "wires": [
+            [
+                "9a6341c9eb81b10f"
+            ]
+        ]
+    },
+    {
+        "id": "9a6341c9eb81b10f",
+        "type": "debug",
+        "z": "c6f138249fc85b8a",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 640,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "f8a5ee92ed13b242",
+        "type": "inject",
+        "z": "c6f138249fc85b8a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{}",
+        "payloadType": "json",
+        "x": 70,
+        "y": 220,
+        "wires": [
+            [
+                "f46903e88fc6a6c9"
+            ]
+        ]
+    },
+    {
+        "id": "f46903e88fc6a6c9",
+        "type": "function",
+        "z": "c6f138249fc85b8a",
+        "name": "function 2",
+        "func": "msg.topic = \"SELECT * FROM sensores ORDER BY data_time DESC LIMIT 5\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 260,
+        "y": 220,
+        "wires": [
+            [
+                "54af52347463f5b1"
+            ]
+        ]
+    },
+    {
+        "id": "54af52347463f5b1",
+        "type": "mysql",
+        "z": "c6f138249fc85b8a",
+        "mydb": "d388a8bc6adc9c8e",
+        "name": "",
+        "x": 450,
+        "y": 220,
+        "wires": [
+            [
+                "7cd4c9744050b4cd"
+            ]
+        ]
+    },
+    {
+        "id": "7cd4c9744050b4cd",
+        "type": "debug",
+        "z": "c6f138249fc85b8a",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 600,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "d388a8bc6adc9c8e",
+        "type": "MySQLdatabase",
+        "name": "arthur",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db": "ativ10",
+        "tz": "",
+        "charset": "UTF8"
+    }
+]
